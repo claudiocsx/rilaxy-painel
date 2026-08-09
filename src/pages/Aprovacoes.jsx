@@ -50,11 +50,11 @@ export default function Aprovacoes() {
             <tbody>
               {pendentes.map((u) => (
                 <tr key={u.uid}>
-                  <td>{u.displayName || '-'}</td>
-                  <td>{u.email || '-'}</td>
-                  <td>{u.createdAt?.toDate?.().toLocaleDateString('pt-BR') || '-'}</td>
-                  <td><code>{u.codigoConvite || '-'}</code></td>
-                  <td>
+                  <td data-label="Nome">{u.displayName || '-'}</td>
+                  <td data-label="Email">{u.email || '-'}</td>
+                  <td data-label="Data">{u.createdAt?.toDate?.().toLocaleDateString('pt-BR') || '-'}</td>
+                  <td data-label="Código"><code>{u.codigoConvite || '-'}</code></td>
+                  <td data-label="Ações">
                     <button className="btn btn-success btn-sm" onClick={() => handleAprovar(u.uid)}>
                       Aprovar
                     </button>

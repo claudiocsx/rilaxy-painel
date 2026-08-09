@@ -119,11 +119,11 @@ export default function Convites() {
               <tbody>
                 {convites.map((c) => (
                   <tr key={c.codigo}>
-                    <td><code>{c.codigo}</code></td>
-                    <td>{statusConvite(c)}</td>
-                    <td>{c.usosAtuais}/{c.maxUsos}</td>
-                    <td>{c.criadoEm?.toDate?.().toLocaleDateString('pt-BR') || '-'}</td>
-                    <td>
+                    <td data-label="Código"><code>{c.codigo}</code></td>
+                    <td data-label="Status">{statusConvite(c)}</td>
+                    <td data-label="Usos">{c.usosAtuais}/{c.maxUsos}</td>
+                    <td data-label="Criado em">{c.criadoEm?.toDate?.().toLocaleDateString('pt-BR') || '-'}</td>
+                    <td data-label="Ações">
                       {c.ativo && c.usosAtuais < c.maxUsos ? (
                         <button className="btn btn-danger btn-sm" onClick={() => handleRevogar(c.codigo)}>
                           Revogar

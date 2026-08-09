@@ -18,12 +18,16 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body.menu-open {
+  overflow: hidden;
 }
 
 /* Login */
 .login-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +60,7 @@ body {
 /* Layout */
 .layout {
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .sidebar {
@@ -69,6 +73,7 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
+  z-index: 70;
 }
 
 .sidebar-header {
@@ -556,3 +561,221 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+/* Focus visibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Mobile topbar + drawer */
+.mobile-topbar {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.mobile-topbar-logo {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.mobile-topbar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.mobile-topbar-spacer {
+  flex: 1;
+}
+
+.hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.hamburger:hover {
+  background: var(--surface2);
+}
+
+.sidebar-close {
+  margin-left: auto;
+  display: none;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 65;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+  }
+
+  .sidebar {
+    width: 270px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 24px 16px 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: 16px 12px 32px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-value {
+    font-size: 26px;
+  }
+
+  .intention-card {
+    padding: 12px 16px;
+  }
+
+  .intention-emoji {
+    font-size: 24px;
+  }
+
+  .search-form {
+    flex-direction: column;
+    max-width: none;
+  }
+
+  .search-form .btn {
+    width: 100%;
+  }
+
+  /* Tables -> cards */
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-container {
+    overflow: visible;
+  }
+
+  .table tbody tr {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    padding: 4px 0;
+  }
+
+  .table tbody tr:hover {
+    background: var(--surface);
+  }
+
+  .table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .codes-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .code-item {
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

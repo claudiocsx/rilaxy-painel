@@ -67,11 +67,11 @@ export default function Usuarios() {
             <tbody>
               {resultados.map((u) => (
                 <tr key={u.uid}>
-                  <td>{u.displayName || '-'}</td>
-                  <td>{u.email || '-'}</td>
-                  <td>{statusLabel(u.status)}</td>
-                  <td>{u.intention ? `${u.intention}` : '-'}</td>
-                  <td>
+                  <td data-label="Nome">{u.displayName || '-'}</td>
+                  <td data-label="Email">{u.email || '-'}</td>
+                  <td data-label="Status">{statusLabel(u.status)}</td>
+                  <td data-label="Intenção">{u.intention ? `${u.intention}` : '-'}</td>
+                  <td data-label="Ações">
                     {u.status === 'banned' ? (
                       <button className="btn btn-warning btn-sm" onClick={() => handleDesbanir(u.uid)}>
                         Desbanir
