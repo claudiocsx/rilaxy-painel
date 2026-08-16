@@ -359,6 +359,15 @@ body.menu-open {
   background: #10b981;
 }
 
+.btn-whatsapp {
+  background: #25d366;
+  color: #062b16;
+}
+
+.btn-whatsapp:hover:not(:disabled) {
+  background: #1fb958;
+}
+
 .btn-warning {
   background: var(--warning);
   color: #000;

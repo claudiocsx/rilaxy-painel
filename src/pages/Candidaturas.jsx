@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 import { aprovarCandidatura, recusarCandidatura, excluirCandidatura, listarCandidaturas } from '../services/candidaturasService';
+import { normalizarWhatsApp, montarMensagemAprovacao, linkWhatsApp } from '../utils/whatsapp';
+
+function WhatsAppIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ marginRight: 5, verticalAlign: 'middle' }}>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.8c2.17 0 4.21.84 5.74 2.37a8.07 8.07 0 0 1 2.37 5.74c0 4.47-3.64 8.11-8.12 8.11a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.12.82.83-3.04-.2-.31a8.1 8.1 0 0 1-1.24-4.3c0-4.47 3.64-8.11 8.12-8.11zm-3.2 3.68c-.22 0-.57.08-.87.4-.3.32-1.14 1.11-1.14 2.71s1.17 3.14 1.33 3.36c.16.22 2.28 3.48 5.52 4.88.77.33 1.37.53 1.84.68.77.25 1.48.21 2.03.13.62-.09 1.91-.78 2.18-1.54.27-.76.27-1.4.19-1.54-.08-.13-.29-.22-.6-.38-.31-.17-1.91-.94-2.2-1.05-.3-.11-.51-.16-.72.17-.22.32-.85 1.05-1.04 1.26-.19.22-.38.24-.7.08-.31-.16-1.33-.49-2.53-1.56-.94-.84-1.57-1.87-1.75-2.18-.19-.31-.02-.48.14-.64.14-.13.31-.35.47-.52.16-.17.21-.3.32-.5.11-.19.05-.36-.03-.52-.08-.17-.72-1.72-.98-2.36-.26-.62-.52-.54-.72-.55h-.62z" />
+    </svg>
+  );
+}
 
 export default function Candidaturas() {
   const [candidaturas, setCandidaturas] = useState([]);
@@ -22,8 +31,31 @@ export default function Candidaturas() {
   const handleAprovar = async (id) => {
     if (!confirm('Aprovar esta candidatura?')) return;
     const codigo = await aprovarCandidatura(id);
+    const candidatura = candidaturas.find((c) => c.id === id);
     setMsg(`Candidatura aprovada! Código de acesso: ${codigo}`);
     carregar();
+    if (candidatura) abrirWhatsApp(candidatura, codigo);
+  };
+
+  const abrirWhatsApp = (c, codigo) => {
+    const numero = normalizarWhatsApp(c.contato);
+    if (!numero) {
+      setMsg(`Candidatura aprovada! Código: ${codigo || c.codigoGerado}. Contato não reconhecido para abrir WhatsApp — use o botão Copiar.`);
+      return;
+    }
+    const msg = montarMensagemAprovacao(c, codigo || c.codigoGerado);
+    window.open(linkWhatsApp(numero, msg), '_blank');
+  };
+
+  const copiarMensagem = async (c) => {
+    const codigo = c.codigoGerado || '';
+    const msg = montarMensagemAprovacao(c, codigo);
+    try {
+      await navigator.clipboard.writeText(msg);
+      setMsg('Mensagem copiada para a área de transferência.');
+    } catch {
+      setMsg('Não foi possível copiar automaticamente.');
+    }
   };
 
   const handleRecusar = async (id) => {
@@ -115,6 +147,14 @@ export default function Candidaturas() {
                         )}
                         {c.status !== 'Recusado' && (
                           <button className="btn btn-danger btn-sm" onClick={() => handleRecusar(c.id)}>Recusar</button>
+                        )}
+                        {c.status === 'Aprovado' && (
+                          <button className="btn btn-whatsapp btn-sm" onClick={() => abrirWhatsApp(c)}>
+                            <WhatsAppIcon /> WhatsApp
+                          </button>
+                        )}
+                        {c.status === 'Aprovado' && (
+                          <button className="btn btn-ghost btn-sm" onClick={() => copiarMensagem(c)}>Copiar</button>
                         )}
                         <button className="btn btn-ghost btn-sm" onClick={() => handleExcluir(c.id)}>Excluir</button>
                       </div>
