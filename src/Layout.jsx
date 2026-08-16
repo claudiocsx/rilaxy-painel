@@ -74,6 +74,18 @@ const NAV_ITEMS = [
       </Icon>
     ),
   },
+  {
+    to: '/candidaturas',
+    label: 'Candidaturas',
+    icon: (
+      <Icon>
+        <path d="M16 3h5v5" />
+        <path d="M21 3l-7 7" />
+        <path d="M16 13h5v5h-5z" />
+        <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5" />
+      </Icon>
+    ),
+  },
 ];
 
 const PAGE_TITLES = {
@@ -83,6 +95,7 @@ const PAGE_TITLES = {
   '/convites': 'Convites',
   '/moderacao': 'Moderação',
   '/alcance': 'Alcance',
+  '/candidaturas': 'Candidaturas',
 };
 
 export default function Layout() {

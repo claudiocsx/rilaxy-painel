@@ -9,6 +9,7 @@ import Usuarios from './pages/Usuarios';
 import Convites from './pages/Convites';
 import Moderacao from './pages/Moderacao';
 import Alcance from './pages/Alcance';
+import Candidaturas from './pages/Candidaturas';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="convites" element={<Convites />} />
             <Route path="moderacao" element={<Moderacao />} />
             <Route path="alcance" element={<Alcance />} />
+            <Route path="candidaturas" element={<Candidaturas />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
