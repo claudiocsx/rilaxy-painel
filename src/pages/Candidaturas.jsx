@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { aprovarCandidatura, recusarCandidatura, excluirCandidatura, listarCandidaturas } from '../services/candidaturasService';
+import { aprovarCandidatura, recusarCandidatura, excluirCandidatura, listarCandidaturas, garantirConviteDaCandidatura } from '../services/candidaturasService';
 import { normalizarWhatsApp, montarMensagemAprovacao, linkWhatsApp } from '../utils/whatsapp';
 
 function WhatsAppIcon({ size = 14 }) {
@@ -37,18 +37,29 @@ export default function Candidaturas() {
     if (candidatura) abrirWhatsApp(candidatura, codigo);
   };
 
-  const abrirWhatsApp = (c, codigo) => {
+  const abrirWhatsApp = async (c, codigo) => {
+    const codigoFinal = codigo || c.codigoGerado;
+    try {
+      await garantirConviteDaCandidatura({ ...c, codigoGerado: codigoFinal });
+    } catch (err) {
+      console.error('Erro ao garantir convite:', err);
+    }
     const numero = normalizarWhatsApp(c.contato);
     if (!numero) {
-      setMsg(`Candidatura aprovada! Código: ${codigo || c.codigoGerado}. Contato não reconhecido para abrir WhatsApp — use o botão Copiar.`);
+      setMsg(`Candidatura aprovada! Código: ${codigoFinal}. Contato não reconhecido para abrir WhatsApp — use o botão Copiar.`);
       return;
     }
-    const msg = montarMensagemAprovacao(c, codigo || c.codigoGerado);
+    const msg = montarMensagemAprovacao(c, codigoFinal);
     window.open(linkWhatsApp(numero, msg), '_blank');
   };
 
   const copiarMensagem = async (c) => {
     const codigo = c.codigoGerado || '';
+    try {
+      await garantirConviteDaCandidatura({ ...c, codigoGerado: codigo });
+    } catch (err) {
+      console.error('Erro ao garantir convite:', err);
+    }
     const msg = montarMensagemAprovacao(c, codigo);
     try {
       await navigator.clipboard.writeText(msg);
