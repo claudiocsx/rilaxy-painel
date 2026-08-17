@@ -121,6 +121,7 @@ export default function Candidaturas() {
             <table className="table">
               <thead>
                 <tr>
+                  <th>Foto</th>
                   <th>Nome</th>
                   <th>Idade</th>
                   <th>Perfil</th>
@@ -136,6 +137,23 @@ export default function Candidaturas() {
               <tbody>
                 {candidaturas.map((c) => (
                   <tr key={c.id}>
+                    <td data-label="Foto">
+                      {c.fotoUrl ? (
+                        <img
+                          src={c.fotoUrl}
+                          alt={c.nome}
+                          className="candidatura-foto"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="candidatura-foto candidatura-foto-placeholder">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                          </svg>
+                        </div>
+                      )}
+                    </td>
                     <td data-label="Nome"><strong>{c.nome}</strong></td>
                     <td data-label="Idade">{c.idade}</td>
                     <td data-label="Perfil">{c.perfil}</td>

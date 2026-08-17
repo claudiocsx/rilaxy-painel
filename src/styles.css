@@ -539,6 +539,23 @@ body.menu-open {
   color: var(--text-muted);
 }
 
+/* Candidatura foto */
+.candidatura-foto {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.candidatura-foto-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  color: var(--text-muted);
+}
+
 /* Posts */
 .posts-list {
   display: flex;
